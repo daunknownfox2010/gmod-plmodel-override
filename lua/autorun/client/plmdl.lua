@@ -2,20 +2,17 @@
      By 'Jai the Fox' 2020 ]]
 
 
--- Variables
-
--- ConVar pointer variables
-local cl_playercolor = GetConVar("cl_playercolor");
-local cl_playerskin = GetConVar("cl_playerskin");
-local cl_playerbodygroups = GetConVar("cl_playerbodygroups");
-
-
 -- Functions
 
 -- Hook into InitPostEntity so we can send a network packet to the server to notify about a few things
 local function pmdlInitPostEntity()
 	-- This variable starts off as false and is set to true if conditions below are met
 	local modelOverride = false;
+	
+	-- ConVar pointer variables
+	local cl_playercolor = GetConVar("cl_playercolor");
+	local cl_playerskin = GetConVar("cl_playerskin");
+	local cl_playerbodygroups = GetConVar("cl_playerbodygroups");
 	
 	-- If the playercolor cvar is nil, create it and set the modelOverride variable above to true
 	if (cl_playercolor == nil) then

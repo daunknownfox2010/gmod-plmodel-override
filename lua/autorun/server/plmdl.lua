@@ -47,7 +47,7 @@ local function PostPlayerSetModel(ply)
 		util.PrecacheModel(plyModel);
 		
 		-- Sets the player's model + skin
-		ply:SetModel(plyModel);
+		if (ply:GetModel() != plyModel) then ply:SetModel(plyModel); end
 		ply:SetSkin(plySkin);
 		
 		-- Set the bodygroups
@@ -70,8 +70,8 @@ local function pmdlInitialize()
 	util.AddNetworkString("plmdl_notify");
 	
 	-- Set the cvar to a predetermined value depending on the defined gamemode
-	if (PLMDL_GAMEMODE_OVERRIDES[lower(engine.ActiveGamemode())]) then
-		plmdl_override_disable:SetInt(tonumber(PLMDL_GAMEMODE_OVERRIDES[lower(engine.ActiveGamemode())]) || 0);
+	if (PLMDL_GAMEMODE_OVERRIDES[string.lower(engine.ActiveGamemode())]) then
+		plmdl_override_disable:SetInt(tonumber(PLMDL_GAMEMODE_OVERRIDES[string.lower(engine.ActiveGamemode())]) || 0);
 	end
 end
 hook.Add("Initialize", "pmdlInitialize", pmdlInitialize);
@@ -80,7 +80,7 @@ hook.Add("Initialize", "pmdlInitialize", pmdlInitialize);
 local function pmdlPlayerSetModel(ply)
 	-- Use a delayed call to set the model a bit after setting the initial model
 	if (plmdl_override_disable:GetInt() != PLMDL_OVERRIDE_DISABLE_ALL && ply.overridePlayerModel) then
-		timer.Simple(0.025, function() if (IsValid(ply)) then hook.Run("PostPlayerSetModel", ply); end end);
+		timer.Simple(0.05, function() if (IsValid(ply) && ply:Alive()) then PostPlayerSetModel(ply); end end);
 	end
 end
 hook.Add("PlayerSetModel", "pmdlPlayerSetModel", pmdlPlayerSetModel);
