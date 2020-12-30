@@ -16,7 +16,12 @@ local PLMDL_GAMEMODE_OVERRIDES = {
 	["prop_hunt"] = PLMDL_OVERRIDE_DISABLE_MODELS,
 	["murder"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["prophunters"] = PLMDL_OVERRIDE_DISABLE_ALL,
-	["darkrp"] = PLMDL_OVERRIDE_DISABLE_ALL
+	["darkrp"] = PLMDL_OVERRIDE_DISABLE_ALL,
+	["lambda"] = PLMDL_OVERRIDE_DISABLE_ALL,
+	["half-life_2_campaign"] = PLMDL_OVERRIDE_DISABLE_ALL,
+	["hl1coop"] = PLMDL_OVERRIDE_DISABLE_ALL,
+	["hl1coop_infected"] = PLMDL_OVERRIDE_DISABLE_ALL,
+	["extremefootballthrowdown"] = PLMDL_OVERRIDE_DISABLE_COLORS
 };
 
 -- ConVars
