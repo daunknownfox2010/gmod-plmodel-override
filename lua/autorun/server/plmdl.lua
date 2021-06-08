@@ -1,5 +1,5 @@
 --[[ Player Model Override : server init
-     By 'Jai the Fox' 2020 ]]
+     By 'Jai the Fox' 2021 ]]
 
 
 -- Variables
@@ -14,18 +14,18 @@ local PLMDL_GAMEMODE_OVERRIDES = {
 	["base"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["sandbox"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["prop_hunt"] = PLMDL_OVERRIDE_DISABLE_MODELS,
-	["murder"] = PLMDL_OVERRIDE_DISABLE_ALL,
-	["prophunters"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["darkrp"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["lambda"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["half-life_2_campaign"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["hl1coop"] = PLMDL_OVERRIDE_DISABLE_ALL,
 	["hl1coop_infected"] = PLMDL_OVERRIDE_DISABLE_ALL,
-	["extremefootballthrowdown"] = PLMDL_OVERRIDE_DISABLE_COLORS
+	["extremefootballthrowdown"] = PLMDL_OVERRIDE_DISABLE_COLORS,
+	["copsandrunners"] = PLMDL_OVERRIDE_DISABLE_COLORS
 };
 
 -- ConVars
 local plmdl_override_disable = CreateConVar("plmdl_override_disable", 0, FCVAR_NOTIFY, "Controls playermodel overrides. '1' disables completely, '2' overrides model but not colors, '3' overrides colors but not model.", 0, 3);
+local plmdl_override_delay = CreateConVar("plmdl_override_delay", 0.1, FCVAR_NOTIFY, "Controls how long it takes for the playermodel override to kick in when the player spawns.");
 
 
 -- Functions
@@ -80,7 +80,8 @@ hook.Add("Initialize", "pmdlInitialize", pmdlInitialize);
 local function pmdlPlayerSetModel(ply)
 	-- Use a delayed call to set the model a bit after setting the initial model
 	if (plmdl_override_disable:GetInt() != PLMDL_OVERRIDE_DISABLE_ALL && ply.overridePlayerModel) then
-		timer.Simple(0.05, function() if (IsValid(ply) && ply:Alive()) then PostPlayerSetModel(ply); end end);
+		-- Jai: 2021 change! If the player isn't using a valid player model, assume the gamemode probably does this on purpose for its own reason
+		timer.Simple(plmdl_override_delay:GetFloat(), function() if (IsValid(ply) && ply:Alive() && table.HasValue(player_manager.AllValidModels(), ply:GetModel())) then PostPlayerSetModel(ply); end end);
 	end
 end
 hook.Add("PlayerSetModel", "pmdlPlayerSetModel", pmdlPlayerSetModel);
